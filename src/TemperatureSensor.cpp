@@ -8,19 +8,19 @@ const string THERMAL_ZONE_PATH = "/sys/class/thermal/thermal_zone0/temp";
 
 TemperatureSensor::TemperatureSensor()
 {
-    this->stream = new ifstream(THERMAL_ZONE_PATH);
 };
 
 TemperatureSensor::~TemperatureSensor()
 {
-    delete this->stream;
 };
     
 float TemperatureSensor::getCurrentTemperature()
 {
     int res = 0;
     int data;
-    while(*(this->stream) >> data)
+    
+    ifstream fs(THERMAL_ZONE_PATH);
+    while(fs >> data)
     {
         res += data;
     }

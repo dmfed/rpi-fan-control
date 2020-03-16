@@ -3,8 +3,6 @@
 
 class TemperatureSensor
 {
-    std::ifstream* stream;
-
 public:
     TemperatureSensor();
 

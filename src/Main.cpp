@@ -13,10 +13,6 @@ using namespace std;
 
 int main()
 {
-    TemperatureSensor sensor;
-    float temp = sensor.getCurrentTemperature();
-    std::cout << temp << std::endl;
-    
     int status = wiringPiSetup();
     if (status)
     {
@@ -24,20 +20,21 @@ int main()
         throw status;
     }
     
+    TemperatureSensor sensor;
     Fan fan(25);
+    float temp;
+    int dutyCycle = 0;
+    
     while (true)
     {
-        for (int i = 0; i < 100; i+=5)
-        {
-            fan.setDutyCycle(i);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
+        temp = sensor.getCurrentTemperature();
+        std::cout << temp << std::endl;
         
-        for (int i = 100; i > 0; i-=5)
-        {
-            fan.setDutyCycle(i);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
+        dutyCycle = temp > 55 ? (int) (temp + temp * 0.25) : 0;
+        
+        fan.setDutyCycle(dutyCycle);
+        
+        this_thread::sleep_for(chrono::milliseconds(2000));
     }
 
     return 0;
