@@ -1,3 +1,4 @@
+#pragma once
 
 class Fan
 {
@@ -7,7 +8,6 @@ class Fan
 	
 	public:
 		Fan(int pin);
-		~Fan();
 		void setDutyCycle(int dutyCycle);
 		int getDutyCycle();
 };

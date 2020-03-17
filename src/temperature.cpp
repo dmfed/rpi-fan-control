@@ -1,25 +1,18 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include "TemperatureSensor.h"
+#include "temperature.h"
 using namespace std;
 
 const string THERMAL_ZONE_PATH = "/sys/class/thermal/thermal_zone0/temp";
-
-TemperatureSensor::TemperatureSensor()
-{
-}
-
-TemperatureSensor::~TemperatureSensor()
-{
-}
     
-float TemperatureSensor::getCurrentTemperature()
+float getCpuTemperature()
 {
     int data;
     
     ifstream fs(THERMAL_ZONE_PATH);
     fs >> data;
+    fs.close();
     
     return (float) data / 1000.0;
 }

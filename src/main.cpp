@@ -6,12 +6,12 @@
 
 #include <wiringPi.h>
 
-#include "TemperatureSensor.h"
-#include "Fan.h"
+#include "temperature.h"
+#include "fan.h"
 
 using namespace std;
 
-int main()
+void initGpio()
 {
     int status = wiringPiSetup();
     if (status)
@@ -19,15 +19,19 @@ int main()
         cout << "Failed to init GPIO: " << status << endl;
         throw status;
     }
+}
+
+int main()
+{
+    initGpio();
     
-    TemperatureSensor sensor;
     Fan fan(25);
     float temp;
     int dutyCycle = 0;
     
     while (true)
     {
-        temp = sensor.getCurrentTemperature();
+        temp = getCpuTemperature();
         std::cout << temp << std::endl;
         
         dutyCycle = temp > 55 ? (int) (temp + temp * 0.25) : 0;

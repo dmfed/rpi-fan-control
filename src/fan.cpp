@@ -2,7 +2,7 @@
 
 #include <wiringPi.h>
 #include <softPwm.h>
-#include "Fan.h"
+#include "fan.h"
 
 using namespace std;
 
@@ -21,11 +21,6 @@ Fan::Fan(int pin)
 	}
 	
 	this->setDutyCycle(0);
-}
-
-Fan::~Fan()
-{
-	
 }
 
 void Fan::setDutyCycle(int dutyCycle)
