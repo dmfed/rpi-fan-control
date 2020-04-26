@@ -30,7 +30,7 @@ int main()
     initGpio();
     
     Fan fan(6);
-    FanController fanController(fan, 53, 70, logger);
+    FanController fanController(fan, 55, 70, logger);
     float temp;
     
     while (true)

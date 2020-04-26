@@ -21,8 +21,8 @@ public:
     static Logger& getInstance();
 
     void setLevel(LogLevel level);
-    void Log(const string& log, LogLevel level);
-    void Debug(const string& log);
-    void Warning(const string& log);
-    void Error(const string& log);
+    void Log(const string& log, LogLevel level) const;
+    void Debug(const string& log) const;
+    void Warning(const string& log) const;
+    void Error(const string& log) const;
 }; 

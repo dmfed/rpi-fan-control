@@ -20,28 +20,28 @@ void Logger::setLevel(LogLevel level)
     mLevel = level;
 }
 
-void Logger::Log(const string& log, LogLevel level)
+void Logger::Log(const string& log, LogLevel level) const
 {
     if (level <= mLevel)
         std::cout << "[" << getLogLevelName(level) << "] " << log << std::endl;
 }
 
-void Logger::Debug(const string& log)
+void Logger::Debug(const string& log) const
 {
     Log(log, LogLevel::Debug);
 }
 
-void Logger::Warning(const string& log)
+void Logger::Warning(const string& log) const
 {
     Log(log, LogLevel::Warning);
 }
 
-void Logger::Error(const string& log)
+void Logger::Error(const string& log) const
 {
     Log(log, LogLevel::Error);
 }
 
-const char* Logger::getLogLevelName(LogLevel level)
+const char* Logger::getLogLevelName(LogLevel level) const
 {
     switch (level)
     {

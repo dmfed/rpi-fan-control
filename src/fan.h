@@ -9,5 +9,5 @@ private:
 public:
 	Fan(int pin);
 	void setDutyCycle(int dutyCycle);
-	int getDutyCycle();
+	int getDutyCycle() const;
 };

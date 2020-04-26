@@ -40,7 +40,7 @@ void Fan::setDutyCycle(int dutyCycle)
 	softPwmWrite(mPin, mDutyCycle);
 }
 
-int Fan::getDutyCycle()
+int Fan::getDutyCycle() const
 {
 	return mDutyCycle;
 }

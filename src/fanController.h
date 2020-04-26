@@ -17,7 +17,7 @@ private:
     };
 
     Fan& mFan;
-    Logger& mLogger;
+    const Logger& mLogger;
     FanLevel mFanLevel;
     const float mThreashold;
     const float mAverageThreashold;
@@ -26,15 +26,15 @@ private:
 
 public:
     FanController(Fan& mFan, const float threasholdTemperature,
-                    const float criticalTemperature, Logger& logger);
+                    const float criticalTemperature, const Logger& logger);
     ~FanController();
-    void handleTemperatureChange(float temperature);
+    void handleTemperatureChange(const float temperature);
 
 private:
     void startContinuingByTime();
-    void handleContinuingByTime(FanController::FanLevel level);
-    void setLevelAndUpdate(FanController::FanLevel level);
+    void handleContinuingByTime(const FanController::FanLevel level);
+    void setLevelAndUpdate(const FanController::FanLevel level);
     void updateFan();
     bool is_continuing_by_time() const;
-    const char* getFanLevelName(const FanController::FanLevel &level);
+    const char* getFanLevelName(const FanController::FanLevel &level) const;
 };

@@ -8,7 +8,7 @@ using namespace std;
 using namespace std::chrono;
 
 FanController::FanController(Fan& fan, const float threasholdTemperature,
-                            const float criticalTemperature, Logger& logger)
+                            const float criticalTemperature, const Logger& logger)
     : mFan(fan),
     mLogger(logger),
     mFanLevel(FanLevel::Off),
@@ -26,7 +26,7 @@ FanController::~FanController()
         delete mStartedByTime;
 }
 
-void FanController::handleTemperatureChange(float temperature)
+void FanController::handleTemperatureChange(const float temperature)
 {
     FanLevel level;
     if (temperature > mHighTreashold)
@@ -37,9 +37,6 @@ void FanController::handleTemperatureChange(float temperature)
         level = Low;
     else
         level = Off;
-    
-    mLogger.Debug(("New fan level: " + string(getFanLevelName(level))).c_str());
-
     
     if (level > mFanLevel)
     {
@@ -62,9 +59,8 @@ void FanController::startContinuingByTime()
     mStartedByTime = new time_t(time);
 }
 
-void FanController::handleContinuingByTime(FanController::FanLevel level)
+void FanController::handleContinuingByTime(const FanController::FanLevel level)
 {
-    mLogger.Debug("Continuing by time");
     auto started = system_clock::from_time_t(*mStartedByTime);
     auto now = system_clock::now();
     if (duration_cast<std::chrono::seconds>(now - started).count() > 20)
@@ -74,11 +70,18 @@ void FanController::handleContinuingByTime(FanController::FanLevel level)
         delete mStartedByTime;
         mStartedByTime = nullptr;
     }
+    else
+    {
+        mLogger.Debug("Continuing by time");
+    }
 }
 
-void FanController::setLevelAndUpdate(FanController::FanLevel level)
+void FanController::setLevelAndUpdate(const FanController::FanLevel level)
 {
-    mLogger.Debug(("Set fan level: " + string(getFanLevelName(level))).c_str());
+    if (mFanLevel == level)
+        return;
+    
+    mLogger.Debug("Set fan level: " + string(getFanLevelName(level)));
     mFanLevel = level;
     updateFan();
 }
@@ -110,7 +113,7 @@ bool FanController::is_continuing_by_time() const
     return mStartedByTime != nullptr;
 }
 
-const char* FanController::getFanLevelName(const FanController::FanLevel &level)
+const char* FanController::getFanLevelName(const FanController::FanLevel &level) const
 {
     switch (level)
     {
