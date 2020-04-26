@@ -40,17 +40,18 @@ void FanController::handleTemperatureChange(float temperature)
     
     mLogger.Debug(("New fan level: " + string(getFanLevelName(level))).c_str());
 
-    if (is_continuing_by_time())
+    
+    if (level > mFanLevel)
+    {
+        setLevelAndUpdate(level);
+    }
+    else if (is_continuing_by_time())
     {
         handleContinuingByTime(level);
     }
     else if (level < mFanLevel)
     {
         startContinuingByTime();
-    }
-    else if (level > mFanLevel)
-    {
-        setLevelAndUpdate(level);
     }
 }
 
@@ -66,11 +67,12 @@ void FanController::handleContinuingByTime(FanController::FanLevel level)
     mLogger.Debug("Continuing by time");
     auto started = system_clock::from_time_t(*mStartedByTime);
     auto now = system_clock::now();
-    if (duration_cast<std::chrono::minutes>(now - started).count() > 1)
+    if (duration_cast<std::chrono::seconds>(now - started).count() > 20)
     {
-        mLogger.Debug("1 min past. Stop continuing by time");
+        mLogger.Debug("20 sec past. Stop continuing by time");
         setLevelAndUpdate(level);
         delete mStartedByTime;
+        mStartedByTime = nullptr;
     }
 }
 
@@ -90,7 +92,7 @@ void FanController::updateFan()
             dutyCycle = 0;
             break;
         case FanLevel::Low:
-            dutyCycle = 50;
+            dutyCycle = 33;
             break;
         case FanLevel::Average:
             dutyCycle = 75;

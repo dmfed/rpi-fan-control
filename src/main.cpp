@@ -25,17 +25,12 @@ void initGpio()
 int main()
 {
     Logger logger = Logger::getInstance();
-
-#ifdef DEBUG
     logger.setLevel(LogLevel::Debug);
-#else
-    logger.setLevel(LogLevel::Error);
-#endif
 
     initGpio();
     
     Fan fan(6);
-    FanController fanController(fan, 55f, 70f, logger);
+    FanController fanController(fan, 53, 70, logger);
     float temp;
     int dutyCycle = 0;
     
@@ -43,7 +38,7 @@ int main()
     {
         temp = getCpuTemperature();
         logger.Debug("CPU temperature: " + std::to_string(temp));
-)
+
         fanController.handleTemperatureChange(temp);
         
         this_thread::sleep_for(chrono::milliseconds(1000));

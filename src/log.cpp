@@ -28,18 +28,18 @@ void Logger::Log(const string& log, LogLevel level)
 
 void Logger::Debug(const string& log)
 {
-    std::cout << "[DEBUG]";
+    std::cout << "[DEBUG] ";
     Log(log, LogLevel::Debug);
 }
 
 void Logger::Warning(const string& log)
 {
-    std::cout << "[WARNING]";
+    std::cout << "[WARNING] ";
     Log(log, LogLevel::Warning);
 }
 
 void Logger::Error(const string& log)
 {
-    std::cout << "[ERROR]";
+    std::cout << "[ERROR] ";
     Log(log, LogLevel::Error);
 }
