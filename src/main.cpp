@@ -1,6 +1,5 @@
 #include <iostream>
-#include <fstream>
-
+#include <string>
 #include <chrono>
 #include <thread>
 
@@ -8,6 +7,8 @@
 
 #include "temperature.h"
 #include "fan.h"
+#include "fanController.h"
+#include "log.h"
 
 using namespace std;
 
@@ -16,29 +17,36 @@ void initGpio()
     int status = wiringPiSetup();
     if (status)
     {
-        cout << "Failed to init GPIO: " << status << endl;
+        Logger::getInstance().Error("Failed to initialize wiringPi!");
         throw status;
     }
 }
 
 int main()
 {
+    Logger logger = Logger::getInstance();
+
+#ifdef DEBUG
+    logger.setLevel(LogLevel::Debug);
+#else
+    logger.setLevel(LogLevel::Error);
+#endif
+
     initGpio();
     
-    Fan fan(25);
+    Fan fan(6);
+    FanController fanController(fan, 55f, 70f, logger);
     float temp;
     int dutyCycle = 0;
     
     while (true)
     {
         temp = getCpuTemperature();
-        std::cout << temp << std::endl;
+        logger.Debug("CPU temperature: " + std::to_string(temp));
+)
+        fanController.handleTemperatureChange(temp);
         
-        dutyCycle = temp > 55 ? (int) (temp + temp * 0.25) : 0;
-        
-        fan.setDutyCycle(dutyCycle);
-        
-        this_thread::sleep_for(chrono::milliseconds(2000));
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 
     return 0;

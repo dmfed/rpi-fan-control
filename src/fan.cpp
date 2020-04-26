@@ -6,42 +6,41 @@
 
 using namespace std;
 
-const int INITIAL_DUTY_CYCLE = 0;
-const int DUTY_CYCLE_RANGE = 100;
+static const int INITIAL_DUTY_CYCLE = 0;
+static const int DUTY_CYCLE_MAX = 100;
 
-Fan::Fan(int pin)
+Fan::Fan(int pin) :
+	mPin(pin)
 {
-	this->pin = pin;
-	
-	int status = softPwmCreate(pin, INITIAL_DUTY_CYCLE, DUTY_CYCLE_RANGE);
+	int status = softPwmCreate(pin, INITIAL_DUTY_CYCLE, DUTY_CYCLE_MAX);
 	if (status)
 	{
 		cout << "Failed to init GPIO pin: " << status << endl;
 		throw status;
 	}
 	
-	this->setDutyCycle(0);
+	setDutyCycle(0);
 }
 
 void Fan::setDutyCycle(int dutyCycle)
 {
 	if (dutyCycle < 0)
 	{
-		this->dutyCycle = 0;
+		mDutyCycle = 0;
 	}
 	else if (dutyCycle > 100)
 	{
-		this->dutyCycle = 100;
+		mDutyCycle = 100;
 	}
 	else
 	{
-		this->dutyCycle = dutyCycle;
+		mDutyCycle = dutyCycle;
 	}
 	
-	softPwmWrite(this->pin, this->dutyCycle);
+	softPwmWrite(mPin, mDutyCycle);
 }
 
 int Fan::getDutyCycle()
 {
-	return this->dutyCycle;
+	return mDutyCycle;
 }
