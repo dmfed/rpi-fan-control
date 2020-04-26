@@ -25,14 +25,13 @@ void initGpio()
 int main()
 {
     Logger logger = Logger::getInstance();
-    logger.setLevel(LogLevel::Debug);
+    logger.setLevel(LogLevel::Error);
 
     initGpio();
     
     Fan fan(6);
     FanController fanController(fan, 53, 70, logger);
     float temp;
-    int dutyCycle = 0;
     
     while (true)
     {

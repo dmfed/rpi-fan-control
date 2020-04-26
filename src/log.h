@@ -15,6 +15,7 @@ class Logger
 private:
     LogLevel mLevel;
     Logger();
+    const char* getLogLevelName(LogLevel level);
 
 public:
     static Logger& getInstance();
