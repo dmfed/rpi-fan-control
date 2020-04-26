@@ -15,7 +15,7 @@ Logger& Logger::getInstance()
     return instance;
 }
 
-void Logger::setLevel(LogLevel level)
+void Logger::setLevel(const LogLevel level)
 {
     mLevel = level;
 }
@@ -41,7 +41,7 @@ void Logger::Error(const string& log) const
     Log(log, LogLevel::Error);
 }
 
-const char* Logger::getLogLevelName(LogLevel level) const
+const char* Logger::getLogLevelName(const LogLevel level) const
 {
     switch (level)
     {
