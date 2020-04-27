@@ -34,7 +34,7 @@ int main()
     initGpio();
     
     Fan fan(WIRING_PI_FAN_PIN);
-    FanController fanController(fan, TEMP_THREASHOLD, TEMP_CRITICAL, logger);
+    FanController fanController(fan, TEMP_THRESHOLD, TEMP_CRITICAL, logger);
     float temp;
     
     while (true)
