@@ -25,8 +25,11 @@ void initGpio()
 int main()
 {
     Logger logger = Logger::getInstance();
+#ifdef DEBUG
+    logger.setLevel(LogLevel::Debug);
+#else
     logger.setLevel(LogLevel::Error);
-
+#endif
     initGpio();
     
     Fan fan(6);
