@@ -13,7 +13,7 @@ Get binary executable file:
 `$ make`  
 Find bin here: `./bin/rpi-fan-controller`  
 OR  
-Install it as systemd service by running:
+Install it as systemd service by running:  
 `$ sudo make install`  
 
 ## How to uninstall  
@@ -26,5 +26,5 @@ Program has 3 levels: Low, Average, High
 - High is defined as critical value  
   
 Starts fan (by using soft PWM) when CPU temperature higher than threshold  
-Stops when less than threshold
+Stops when less than threshold  
 Continues spinning your fan for 20 sec if level gets lower  
