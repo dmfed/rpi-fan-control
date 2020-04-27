@@ -5,6 +5,7 @@
 
 #include <wiringPi.h>
 
+#include "configuration.h"
 #include "temperature.h"
 #include "fan.h"
 #include "fanController.h"
@@ -32,8 +33,8 @@ int main()
 #endif
     initGpio();
     
-    Fan fan(6);
-    FanController fanController(fan, 55, 70, logger);
+    Fan fan(WIRING_PI_FAN_PIN);
+    FanController fanController(fan, TEMP_THREASHOLD, TEMP_CRITICAL, logger);
     float temp;
     
     while (true)
@@ -43,7 +44,7 @@ int main()
 
         fanController.handleTemperatureChange(temp);
         
-        this_thread::sleep_for(chrono::milliseconds(1000));
+        this_thread::sleep_for(chrono::milliseconds(UPDATE_INTERVAL_MSEC));
     }
 
     return 0;
